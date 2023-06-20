@@ -31,7 +31,10 @@ const Profile = (props) => {
           <Text style={styles.nameText}>Zuhran Ahmad</Text>
           <Text style={styles.sinText}>SIN: 1234567890</Text>
         </View>
-        <TouchableOpacity style={styles.signOutBtn}>
+        <TouchableOpacity
+          onPress={() => props?.navigation.navigate("SignIn")}
+          style={styles.signOutBtn}
+        >
           <Text style={styles.signOutTxt}>Sign Out</Text>
         </TouchableOpacity>
       </View>

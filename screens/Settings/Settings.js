@@ -18,8 +18,21 @@ import Header from "../../components/common/Header";
 import BottomMenu from "../../components/common/BottomMenu";
 import { Ionicons } from "@expo/vector-icons";
 import TextField from "../../components/common/TextField";
+import PrimaryButton from "../../components/common/PrimaryButton";
 
 const Settings = (props) => {
+  const [userForm, setUserForm] = useState({
+    firstName: "Zuhran",
+    lastName: "Ahmed",
+    number: "+92 311 4053544",
+    address: "Gulberg, Lahore",
+    sin: "1234567890",
+  });
+
+  const onSubmit = () => {
+    props?.navigation.navigate("OurServices");
+  };
+
   return (
     <View style={styles.container}>
       <Header navigation={props.navigation} title="Account Settings" />
@@ -40,11 +53,30 @@ const Settings = (props) => {
         </View>
       </View>
       <ScrollView>
-        <TextField title="First Name" placeHolder="Zuhran" />
-        <TextField title="Last Name" placeHolder="Ahmed" />
-        <TextField title="Phone Number" placeHolder="+92 311 4053544" />
-        <TextField title="Address" placeHolder="Gulberg 2, Lahore" />
-        <TextField title="SIN" placeHolder="1234567890" />
+        <TextField
+          title="First Name"
+          placeHolder="Zuhran"
+          value={userForm.firstName}
+        />
+        <TextField
+          title="Last Name"
+          placeHolder="Ahmed"
+          value={userForm.lastName}
+        />
+        <TextField
+          title="Phone Number"
+          placeHolder="+92 311 4053544"
+          value={userForm.number}
+        />
+        <TextField
+          title="Address"
+          placeHolder="Gulberg 2, Lahore"
+          value={userForm.address}
+        />
+        <TextField title="SIN" placeHolder="1234567890" value={userForm.sin} />
+        <View style={styles.buttonWrapper}>
+          <PrimaryButton title="Save" onPress={onSubmit} />
+        </View>
       </ScrollView>
       <BottomMenu navigation={props.navigation} select="profile" />
     </View>
@@ -86,6 +118,9 @@ const styles = StyleSheet.create({
     backgroundColor: colorScheme.BACK_COLOR,
     justifyContent: "center",
     alignItems: "center",
+  },
+  buttonWrapper: {
+    marginTop: hp("3%"),
   },
 });
 

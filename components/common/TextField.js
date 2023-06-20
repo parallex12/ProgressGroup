@@ -12,7 +12,7 @@ import { AntDesign, Feather } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native";
 
 const TextField = (props) => {
-  const { hidePass, setHidePass } = props;
+  const { hidePass, setHidePass, value } = props;
   return (
     <View style={styles.container}>
       <Text style={styles.titleTxt}>{props?.title}</Text>
@@ -21,12 +21,13 @@ const TextField = (props) => {
           style={styles.inputField}
           placeholder={props?.placeHolder}
           placeholderTextColor={colorScheme.PLC_COLOR}
-          secureTextEntry={hidePass ? false : true}
+          secureTextEntry={hidePass ? true : false}
+          value={value}
         />
         {props.password && (
           <TouchableOpacity onPress={() => setHidePass(!hidePass)}>
             <Feather
-              name={hidePass ? "eye" : "eye-off"}
+              name={hidePass ? "eye-off" : "eye"}
               size={rf(14)}
               color={colorScheme.PLC_COLOR}
             />

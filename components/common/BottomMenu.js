@@ -121,7 +121,7 @@ const BottomMenu = (props) => {
 
 const styles = StyleSheet.create({
   container: {
-    height: hp("7.5%"),
+    height: hp("10%"),
     width: wp("100%"),
     position: "absolute",
     bottom: 0,
@@ -135,7 +135,8 @@ const styles = StyleSheet.create({
     height: "100%",
     flex: 1,
     alignItems: "center",
-    justifyContent: "center",
+    // justifyContent: "center",
+    paddingTop: hp("1%"),
   },
   imgWrapper: {
     height: hp("3%"),

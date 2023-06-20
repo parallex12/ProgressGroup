@@ -14,7 +14,7 @@ export const fontStyle = {
   LARGE: rf(20),
   HEADING: rf(18),
   MEDIUM: rf(16),
-  SMALL: rf(14),
+  SMALL: rf(13),
   EXTRA_SMALL: rf(12),
   MENU_TXT: rf(10),
   TXT_LIGHT: "#EBEBEB",
