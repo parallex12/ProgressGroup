@@ -16,7 +16,12 @@ const ContactUs = (props) => {
   return (
     <View style={styles.container}>
       <Header navigation={props.navigation} title="Contact Us" />
-      <ScrollView contentContainerStyle={{ alignItems: "center" }}>
+      <ScrollView
+        contentContainerStyle={{
+          alignItems: "center",
+          paddingBottom: hp("10%"),
+        }}
+      >
         <ContactCard
           title="Contact Us"
           detail="(289) 813-3378"

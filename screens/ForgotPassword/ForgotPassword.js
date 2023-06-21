@@ -15,7 +15,7 @@ const ForgotPassword = (props) => {
 
   return (
     <View style={styles.container}>
-      <Header navigation={props.navigation} title="Reset Password" />
+      <Header navigation={props.navigation} title="Reset Password" back />
       <View style={styles.titleWrapper}>
         <Text style={styles.titleTxt}>Forgot Password</Text>
         <Text style={styles.subText}>

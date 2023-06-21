@@ -16,7 +16,7 @@ const ForgotPassword = (props) => {
   const [hideConfirmPass, setHideConfirmPass] = useState(false);
   return (
     <View style={styles.container}>
-      <Header navigation={props.navigation} title="Reset Password" />
+      <Header navigation={props.navigation} title="Reset Password" back />
       <TextField
         title="New Password"
         placeHolder="Enter your password"

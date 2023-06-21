@@ -12,7 +12,7 @@ export const colorScheme = {
 export const fontStyle = {
   EXTRA_LARGE: rf(22),
   LARGE: rf(20),
-  HEADING: rf(18),
+  HEADING: rf(17),
   MEDIUM: rf(16),
   SMALL: rf(13),
   EXTRA_SMALL: rf(12),

@@ -35,7 +35,7 @@ const Settings = (props) => {
 
   return (
     <View style={styles.container}>
-      <Header navigation={props.navigation} title="Account Settings" />
+      <Header navigation={props.navigation} title="Account Settings" back />
       {/* Profile Card */}
 
       <View style={styles.profileCard}>
@@ -78,7 +78,6 @@ const Settings = (props) => {
           <PrimaryButton title="Save" onPress={onSubmit} />
         </View>
       </ScrollView>
-      <BottomMenu navigation={props.navigation} select="profile" />
     </View>
   );
 };

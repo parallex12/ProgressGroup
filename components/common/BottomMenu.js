@@ -31,13 +31,13 @@ const BottomMenu = (props) => {
         style={styles.optionWrapper}
       >
         <View style={styles.imgWrapper}>
-          <Feather
-            name="phone"
-            size={rf(16)}
-            color={
+          <Image
+            resizeMode="contain"
+            style={{ height: "80%", width: "80%" }}
+            source={
               props?.select == "contact"
-                ? colorScheme.BTN_PRM
-                : colorScheme.WHITE
+                ? require("../../assets/callDark.png")
+                : require("../../assets/call.png")
             }
           />
         </View>
@@ -91,13 +91,13 @@ const BottomMenu = (props) => {
         style={styles.optionWrapper}
       >
         <View style={styles.imgWrapper}>
-          <AntDesign
-            name="user"
-            size={rf(16)}
-            color={
+          <Image
+            resizeMode="contain"
+            style={{ height: "80%", width: "80%" }}
+            source={
               props?.select == "profile"
-                ? colorScheme.BTN_PRM
-                : colorScheme.WHITE
+                ? require("../../assets/userDark.png")
+                : require("../../assets/userLight.png")
             }
           />
         </View>
@@ -130,6 +130,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: wp("2%"),
     borderTopWidth: 0.5,
     borderTopColor: colorScheme.PLC_COLOR,
+    backgroundColor: colorScheme.BACK_COLOR,
   },
   optionWrapper: {
     height: "100%",

@@ -10,16 +10,18 @@ import { colorScheme, fontStyle } from "../../Theme";
 const Header = (props) => {
   return (
     <View style={styles.container}>
-      <TouchableOpacity
-        onPress={() => props.navigation.goBack()}
-        style={styles.iconWrapper}
-      >
-        <Entypo
-          name="chevron-thin-left"
-          size={rf(14)}
-          color={colorScheme.WHITE}
-        />
-      </TouchableOpacity>
+      {props?.back && (
+        <TouchableOpacity
+          onPress={() => props.navigation.goBack()}
+          style={styles.iconWrapper}
+        >
+          <Entypo
+            name="chevron-thin-left"
+            size={rf(13)}
+            color={colorScheme.WHITE}
+          />
+        </TouchableOpacity>
+      )}
       <Text style={styles.titleTxt}>{props?.title}</Text>
     </View>
   );
