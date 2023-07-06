@@ -28,3 +28,43 @@ export const servicesData = [
     img: require("../assets/services/cfo.png"),
   },
 ];
+
+export const accountsDataHelper = [
+  {
+    label: "Sale Revenue",
+    amount: 150000,
+  },
+
+  {
+    label: "Interest Revenue",
+    amount: 150000,
+  },
+
+  {
+    label: "Total Revenue",
+    amount: 0,
+    color: "#08BF7E",
+  },
+
+  {
+    label: "Expenses",
+    amount: 0,
+    color: "#D7717E",
+  },
+
+  {
+    label: "Net Income before tax",
+    amount: 115000,
+  },
+
+  {
+    label: "Income Tax",
+    amount: 11000,
+  },
+
+  {
+    label: "Net Income",
+    amount: 0,
+    color: "#08BF7E",
+  },
+];

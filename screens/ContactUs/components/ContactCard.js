@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native";
+import { View, StyleSheet, Text, Pressable } from "react-native";
 import React from "react";
 import {
   widthPercentageToDP as wp,
@@ -19,10 +19,10 @@ const ContactCard = (props) => {
           style={{ width: "55%", height: "55%" }}
         />
       </View>
-      <View>
+      <Pressable onPress={props?.onPress}>
         <Text style={styles.titleTtxt}>{props?.title}</Text>
         {props?.detail && <Text style={styles.subText}>{props?.detail}</Text>}
-      </View>
+      </Pressable>
     </View>
   );
 };

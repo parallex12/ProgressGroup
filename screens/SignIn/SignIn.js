@@ -11,13 +11,24 @@ import TextField from "../../components/common/TextField";
 import PrimaryButton from "../../components/common/PrimaryButton";
 import CheckBox from "../../components/common/CheckBox";
 import BottomMenu from "../../components/common/BottomMenu";
+import { validateUser } from "../../utils/validation";
 
 const SignIn = (props) => {
   const [select, setSelect] = useState(false);
-  const [hidePass, setHidePass] = useState(false);
+  const [hidePass, setHidePass] = useState(true);
+  const [userDetails, setUserDetails] = useState({
+    sin: "",
+    number: "",
+    password: "",
+  });
 
   const onSignIn = () => {
-    props.navigation.navigate("OurServices");
+    let validation = validateUser(userDetails);
+    if (validation) {
+      props.navigation.navigate("OurServices");
+    } else {
+      return;
+    }
   };
 
   return (
@@ -26,14 +37,30 @@ const SignIn = (props) => {
       <View style={styles.titleWrapper}>
         <Text style={styles.titleTxt}>Sign in</Text>
       </View>
-      <TextField title="SIN" placeHolder="Enter Your SIN" />
-      <TextField title="Phone Number" placeHolder="Enter your phone number" />
+      <TextField
+        title="SIN"
+        placeHolder="Enter Your SIN"
+        value={userDetails?.sin}
+        onChangeText={(val) => setUserDetails({ ...userDetails, sin: val })}
+        keyboardType="numeric"
+      />
+      <TextField
+        title="Phone Number"
+        placeHolder="Enter your phone number"
+        value={userDetails?.number}
+        onChangeText={(val) => setUserDetails({ ...userDetails, number: val })}
+        keyboardType="numeric"
+      />
       <TextField
         title="Password"
         placeHolder="Enter your password"
         password
         hidePass={hidePass}
         setHidePass={setHidePass}
+        value={userDetails?.password}
+        onChangeText={(val) =>
+          setUserDetails({ ...userDetails, password: val })
+        }
       />
       <View style={styles.forgotWrapper}>
         <View style={styles.checkBoxWrapper}>

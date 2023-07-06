@@ -1,5 +1,12 @@
 import React, { useEffect, useState, useRef } from "react";
-import { StyleSheet, View, Text, Image } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Text,
+  Image,
+  TouchableOpacity,
+  Pressable,
+} from "react-native";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -11,6 +18,14 @@ import { servicesData } from "../../helper/data";
 import BottomMenu from "../../components/common/BottomMenu";
 
 const OurServices = (props) => {
+  const onNavigate = (index) => {
+    if (index === 0) {
+      props?.navigation.navigate("Accounting");
+      return;
+    }
+    console.log("I ran Here");
+  };
+
   return (
     <View style={styles.container}>
       <ImgHeader />
@@ -21,7 +36,11 @@ const OurServices = (props) => {
         {servicesData.map((item, index) => {
           if (index > 2) return;
           return (
-            <View key={index} style={styles.serviceCard}>
+            <Pressable
+              onPress={() => onNavigate(index)}
+              key={index}
+              style={styles.serviceCard}
+            >
               <View style={styles.imgWrapper}>
                 <Image
                   resizeMode="contain"
@@ -30,7 +49,7 @@ const OurServices = (props) => {
                 />
               </View>
               <Text style={styles.serviceText}>{item?.title}</Text>
-            </View>
+            </Pressable>
           );
         })}
       </View>

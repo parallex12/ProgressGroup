@@ -23,6 +23,8 @@ const TextField = (props) => {
           placeholderTextColor={colorScheme.PLC_COLOR}
           secureTextEntry={hidePass ? true : false}
           value={value}
+          onChangeText={props?.onChangeText}
+          keyboardType={props?.keyboardType}
         />
         {props.password && (
           <TouchableOpacity onPress={() => setHidePass(!hidePass)}>

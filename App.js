@@ -1,15 +1,12 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { View } from "react-native";
 import { AppNavigator } from "./routes/AppNavigator";
-import { UnAuthNavigator } from "./routes/UnAuthNavigator";
 import { Provider } from "react-redux";
 import store from "./state-management/store";
 import { useFonts } from "expo-font";
 import { ActivityIndicator } from "react-native";
 
 export default function App() {
-  const [status, setStatus] = useState(false);
-
   const [fontsLoaded] = useFonts({
     AR: require("./assets/fonts/Arimo-Regular.ttf"),
     AM: require("./assets/fonts/Arimo-Medium.ttf"),
@@ -27,7 +24,7 @@ export default function App() {
 
   return (
     <Provider store={store}>
-      {status ? <AppNavigator /> : <UnAuthNavigator />}
+      <AppNavigator />
     </Provider>
   );
 }

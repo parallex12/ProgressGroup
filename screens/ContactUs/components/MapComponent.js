@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React from "react";
 import { StyleSheet, View, Text, Image } from "react-native";
 import {
   widthPercentageToDP as wp,
@@ -6,7 +6,6 @@ import {
 } from "react-native-responsive-screen";
 import { connect } from "react-redux";
 import { fontStyle } from "../../../Theme";
-import MapView from "react-native-maps";
 
 const MapComponent = (props) => {
   return (
@@ -19,14 +18,12 @@ const MapComponent = (props) => {
           style={{ height: "100%", width: "100%" }}
         />
       </View>
-      <MapView style={styles.mapWrapper} />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    height: hp("28%"),
     width: wp("90%"),
     alignItems: "center",
   },
@@ -41,11 +38,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     marginBottom: hp("1%"),
-  },
-  mapWrapper: {
-    height: hp("20%"),
-    width: wp("90%"),
-    backgroundColor: "green",
   },
 });
 
