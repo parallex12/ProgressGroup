@@ -70,22 +70,22 @@ const ContactUs = (props) => {
         />
         <MapComponent
           title="Oakville Office"
-          latitude="43.653225"
-          longitude="-79.383186"
+          latitude="43.42657348186626"
+          longitude="-79.7157079763088"
         />
         <MapView
           style={styles.mapWrapper}
           initialRegion={{
-            latitude: 43.4675,
-            longitude: -79.6877,
-            latitudeDelta: 0.02,
-            longitudeDelta: 0.02,
+            latitude: 43.42657348186626,
+            longitude: -79.7157079763088,
+            latitudeDelta: 0.005,
+            longitudeDelta: 0.005,
           }}
         >
           <Marker
             coordinate={{
-              latitude: 43.4675,
-              longitude: -79.6877,
+              latitude: 43.42657348186626,
+              longitude: -79.7157079763088,
             }}
             title="OakVille Office"
             description="OakVille Office"
@@ -93,22 +93,22 @@ const ContactUs = (props) => {
         </MapView>
         <MapComponent
           title="Toronto Office"
-          latitude="43.653225"
-          longitude="-79.383186"
+          latitude="43.63846947361462"
+          longitude="-79.42520027241855"
         />
         <MapView
           style={styles.mapWrapper}
           initialRegion={{
-            latitude: 43.653225,
-            longitude: -79.383186,
-            latitudeDelta: 0.02,
-            longitudeDelta: 0.02,
+            latitude: 43.63846947361462,
+            longitude: -79.42520027241855,
+            latitudeDelta: 0.005,
+            longitudeDelta: 0.005,
           }}
         >
           <Marker
             coordinate={{
-              latitude: 43.653225,
-              longitude: -79.383186,
+              latitude: 43.63846947361462,
+              longitude: -79.42520027241855,
             }}
             title="Toronto Office"
             description="Toronto Office"

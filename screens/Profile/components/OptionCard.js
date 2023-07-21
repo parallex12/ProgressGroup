@@ -1,5 +1,12 @@
 import React, { useEffect, useState, useRef } from "react";
-import { StyleSheet, View, Text, TouchableOpacity, Image } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  Pressable,
+} from "react-native";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -11,7 +18,7 @@ import { AntDesign } from "@expo/vector-icons";
 
 const OptionCard = (props) => {
   return (
-    <View style={styles.container}>
+    <Pressable onPress={props?.onPress} style={styles.container}>
       <View style={styles.imgWrapper}>
         <Image
           source={props?.img}
@@ -20,10 +27,10 @@ const OptionCard = (props) => {
         />
       </View>
       <Text style={styles.titleTxt}>{props?.title}</Text>
-      <TouchableOpacity onPress={props?.onPress} style={styles.nextIcon}>
+      <View style={styles.nextIcon}>
         <AntDesign name="right" size={rf(12)} color={colorScheme.BTN_PRM} />
-      </TouchableOpacity>
-    </View>
+      </View>
+    </Pressable>
   );
 };
 

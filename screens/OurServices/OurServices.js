@@ -23,7 +23,6 @@ const OurServices = (props) => {
       props?.navigation.navigate("Accounting");
       return;
     }
-    console.log("I ran Here");
   };
 
   return (

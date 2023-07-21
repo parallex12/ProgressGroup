@@ -12,6 +12,14 @@
       "backgroundColor": "#ffffff"
     },
     "assetBundlePatterns": ["**/*"],
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "The app accesses your photos to let you share them with your friends."
+        }
+      ]
+    ],
     "ios": {
       "supportsTablet": true
     },
@@ -23,6 +31,18 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "6880fb5b-d01c-4466-9a9c-1c42e11e3db4"
+      }
+    },
+    "owner": "adlerwareco",
+    "runtimeVersion": {
+      "policy": "sdkVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/6880fb5b-d01c-4466-9a9c-1c42e11e3db4"
     }
   }
 }

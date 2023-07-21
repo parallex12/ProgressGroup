@@ -46,9 +46,6 @@ const Accounting = (props) => {
       });
 
       save(asset.localUri, "IncomeStatement.pdf");
-
-      // await MediaLibrary.saveToLibraryAsync(pdfUri);
-      // console.log("PDF saved successfully!");
     } catch (error) {
       console.error("Error saving PDF:", error);
     }

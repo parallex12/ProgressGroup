@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, View, Text } from "react-native";
 import {
   widthPercentageToDP as wp,
@@ -7,34 +7,63 @@ import {
 import { connect } from "react-redux";
 import { colorScheme, fontStyle } from "../../Theme";
 import Header from "../../components/common/Header";
-import PinInput from "../../components/common/PinInput";
 import PrimaryButton from "../../components/common/PrimaryButton";
 import TextField from "../../components/common/TextField";
+import { validateOldPass } from "../../utils/validation";
+import { _ResetPassword } from "../../state-management/actions/Features/Actions";
+import { ActivityIndicator } from "react-native";
 
 const ForgotPassword = (props) => {
-  const [hideNewPass, setHideNewPass] = useState(false);
-  const [hideConfirmPass, setHideConfirmPass] = useState(false);
+  const [hideNewPass, setHideNewPass] = useState(true);
+  const [hideConfirmPass, setHideConfirmPass] = useState(true);
+  const [userDetails, setUserDetails] = useState({
+    oldPass: "",
+    newPass: "",
+  });
+  const [adminInfo, setAdminInfo] = useState({});
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setAdminInfo(props?.adminData);
+  }, [props?.adminData]);
+
+  const onReset = () => {
+    validateOldPass(userDetails, adminInfo?.password)
+      .then((res) => {
+        props?._ResetPassword(userDetails, props?.navigation, setLoading);
+      })
+      .catch((e) => alert(e?.message));
+    // props?.resetPassword()
+    // () => props.navigation.navigate("OurServices")
+  };
+
   return (
     <View style={styles.container}>
       <Header navigation={props.navigation} title="Reset Password" back />
       <TextField
-        title="New Password"
+        title="Old Password"
         placeHolder="Enter your password"
         password
         hidePass={hideNewPass}
         setHidePass={setHideNewPass}
+        value={userDetails?.oldPass}
+        onChangeText={(val) => setUserDetails({ ...userDetails, oldPass: val })}
       />
       <TextField
-        title="Confirm Password"
+        title="New Password"
         placeHolder="Enter your password"
         password
         hidePass={hideConfirmPass}
         setHidePass={setHideConfirmPass}
+        value={userDetails?.newPass}
+        onChangeText={(val) => setUserDetails({ ...userDetails, newPass: val })}
       />
       <View style={styles.buttonWrapper}>
         <PrimaryButton
-          title="RESET"
-          onPress={() => props.navigation.navigate("OurServices")}
+          title={
+            loading ? <ActivityIndicator size="small" color="#fff" /> : "RESET"
+          }
+          onPress={onReset}
         />
       </View>
     </View>
@@ -54,6 +83,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => ({
   errors: state.errors.errors,
+  adminData: state.main.admin_data,
 });
 
-export default connect(mapStateToProps)(ForgotPassword);
+export default connect(mapStateToProps, { _ResetPassword })(ForgotPassword);

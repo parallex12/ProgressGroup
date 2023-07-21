@@ -19,18 +19,81 @@ import BottomMenu from "../../components/common/BottomMenu";
 import { Ionicons } from "@expo/vector-icons";
 import TextField from "../../components/common/TextField";
 import PrimaryButton from "../../components/common/PrimaryButton";
+import {
+  updateUserDataOnly,
+  updateImgFunc,
+} from "../../state-management/actions/Features/Actions";
+import { ActivityIndicator } from "react-native";
+import { validateUpdateInfo } from "../../utils/validation";
+import * as ImagePicker from "expo-image-picker";
 
 const Settings = (props) => {
+  const [loading, setLoading] = useState(false);
+  const [userInfo, setUserInfo] = useState(props?.adminData);
   const [userForm, setUserForm] = useState({
-    firstName: "Zuhran",
-    lastName: "Ahmed",
-    number: "+92 311 4053544",
-    address: "Gulberg, Lahore",
-    sin: "1234567890",
+    firstName: userInfo?.firstName,
+    lastName: userInfo?.lastName,
+    phone: userInfo?.phone,
+    address: userInfo?.address,
+    sin: userInfo?.sin,
   });
+  const [image, setImage] = useState(null);
+  let id = "07664DVAMVB268ktoycT";
+  useEffect(() => {
+    setUserInfo(props?.adminData);
+  }, [props?.adminData]);
 
   const onSubmit = () => {
-    props?.navigation.navigate("OurServices");
+    validateUpdateInfo(userForm, props?.adminData, image)
+      .then((res) => {
+        if (res == "imageValid") {
+          props?.updateImgFunc(
+            "imageValid",
+            id,
+            null,
+            image,
+            props?.navigation,
+            setLoading
+          );
+        } else if (res == "dataValid") {
+          props?.updateUserDataOnly(
+            id,
+            userForm,
+            props?.navigation,
+            setLoading
+          );
+        } else if (res == "bothValid") {
+          props?.updateImgFunc(
+            "bothValid",
+            id,
+            userForm,
+            image,
+            props?.navigation,
+            setLoading
+          );
+        } else {
+          alert("Something Went Wrong");
+        }
+      })
+      .catch((e) => props?.navigation.navigate("Profile"));
+  };
+
+  const handleChangeValue = (key, value) => {
+    setUserForm((prev) => ({ ...prev, [key]: value }));
+  };
+
+  const pickImage = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      setImage(result.assets[0].uri);
+    }
   };
 
   return (
@@ -43,11 +106,17 @@ const Settings = (props) => {
           <Image
             style={{ height: "100%", width: "100%" }}
             resizeMode="cover"
-            source={require("../../assets/profileImg.png")}
+            source={
+              image
+                ? { uri: image }
+                : userInfo?.profile?.url
+                ? { uri: userInfo?.profile?.url }
+                : require("../../assets/profileImg.png")
+            }
           />
         </View>
         <View style={styles.cameraWrapper}>
-          <TouchableOpacity style={styles.cameraIcon}>
+          <TouchableOpacity onPress={pickImage} style={styles.cameraIcon}>
             <Ionicons name="camera" size={rf(11)} color="#fff" />
           </TouchableOpacity>
         </View>
@@ -57,25 +126,42 @@ const Settings = (props) => {
           title="First Name"
           placeHolder="Zuhran"
           value={userForm.firstName}
+          onChangeText={(val) => handleChangeValue("firstName", val)}
         />
         <TextField
           title="Last Name"
           placeHolder="Ahmed"
           value={userForm.lastName}
+          onChangeText={(val) => handleChangeValue("lastName", val)}
         />
         <TextField
           title="Phone Number"
-          placeHolder="+92 311 4053544"
-          value={userForm.number}
+          placeHolder="+923114053544"
+          value={userForm.phone}
+          onChangeText={(val) => handleChangeValue("phone", val)}
         />
         <TextField
           title="Address"
           placeHolder="Gulberg 2, Lahore"
           value={userForm.address}
+          onChangeText={(val) => handleChangeValue("address", val)}
         />
-        <TextField title="SIN" placeHolder="1234567890" value={userForm.sin} />
+        <TextField
+          title="SIN"
+          value={userForm.sin}
+          onChangeText={(val) => handleChangeValue("sin", val)}
+        />
         <View style={styles.buttonWrapper}>
-          <PrimaryButton title="Save" onPress={onSubmit} />
+          <PrimaryButton
+            title={
+              loading ? (
+                <ActivityIndicator size={"small"} color="#fff" />
+              ) : (
+                "Save"
+              )
+            }
+            onPress={onSubmit}
+          />
         </View>
       </ScrollView>
     </View>
@@ -125,6 +211,8 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => ({
   errors: state.errors.errors,
+  adminData: state.main.admin_data,
 });
-
-export default connect(mapStateToProps)(Settings);
+export default connect(mapStateToProps, { updateUserDataOnly, updateImgFunc })(
+  Settings
+);

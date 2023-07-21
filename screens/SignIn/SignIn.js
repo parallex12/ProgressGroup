@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View, Text, ScrollView } from "react-native";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -10,75 +10,119 @@ import ImgHeader from "../../components/common/ImgHeader";
 import TextField from "../../components/common/TextField";
 import PrimaryButton from "../../components/common/PrimaryButton";
 import CheckBox from "../../components/common/CheckBox";
-import BottomMenu from "../../components/common/BottomMenu";
-import { validateUser } from "../../utils/validation";
+import { validateAdmin } from "../../utils/validation";
+import { getAdmin } from "../../state-management/actions/Features/Actions";
+import { ActivityIndicator } from "react-native";
+import { getAsyncData, storeAsyncData } from "../../utils/utils";
 
 const SignIn = (props) => {
   const [select, setSelect] = useState(false);
   const [hidePass, setHidePass] = useState(true);
   const [userDetails, setUserDetails] = useState({
     sin: "",
-    number: "",
+    phone: "",
     password: "",
   });
 
-  const onSignIn = () => {
-    let validation = validateUser(userDetails);
-    if (validation) {
-      props.navigation.navigate("OurServices");
-    } else {
-      return;
+  const [loading, setLoading] = useState(true);
+  const [adminInfo, setAdminInfo] = useState({});
+
+  useEffect(() => {
+    props?.getAdmin(setLoading);
+  }, []);
+
+  useEffect(() => {
+    (async () => {
+      let status = await getAsyncData("userLoginStatus");
+      if (status) {
+        props.navigation.reset({
+          index: 0,
+          routes: [{ name: "OurServices" }],
+        });
+      }
+    })();
+  }, []);
+
+  useEffect(() => {
+    if (props?.adminData) {
+      setAdminInfo(props?.adminData);
     }
+  }, [props?.adminData]);
+
+  const onSignIn = () => {
+    validateAdmin(userDetails, adminInfo)
+      .then((res) => {
+        props.navigation.reset({
+          index: 0,
+          routes: [{ name: "OurServices" }],
+        });
+        storeAsyncData("userLoginStatus", "true");
+      })
+      .catch((e) => alert(e?.message));
   };
 
   return (
     <View style={styles.container}>
       <ImgHeader />
-      <View style={styles.titleWrapper}>
-        <Text style={styles.titleTxt}>Sign in</Text>
-      </View>
-      <TextField
-        title="SIN"
-        placeHolder="Enter Your SIN"
-        value={userDetails?.sin}
-        onChangeText={(val) => setUserDetails({ ...userDetails, sin: val })}
-        keyboardType="numeric"
-      />
-      <TextField
-        title="Phone Number"
-        placeHolder="Enter your phone number"
-        value={userDetails?.number}
-        onChangeText={(val) => setUserDetails({ ...userDetails, number: val })}
-        keyboardType="numeric"
-      />
-      <TextField
-        title="Password"
-        placeHolder="Enter your password"
-        password
-        hidePass={hidePass}
-        setHidePass={setHidePass}
-        value={userDetails?.password}
-        onChangeText={(val) =>
-          setUserDetails({ ...userDetails, password: val })
-        }
-      />
-      <View style={styles.forgotWrapper}>
-        <View style={styles.checkBoxWrapper}>
-          <CheckBox setSelect={setSelect} select={select} />
-          <Text style={styles.remText}>Remember me</Text>
+      {loading ? (
+        <View style={styles.loader}>
+          <ActivityIndicator size="large" color="#FFF" />
         </View>
-        <Text
-          onPress={() => props.navigation.navigate("ForgotPassword")}
-          style={styles.forgotTxt}
-        >
-          Forgot Password?
-        </Text>
-      </View>
-      <PrimaryButton title="SIGN IN" onPress={onSignIn} />
-      <View style={styles.moreWrapper}>
-        <Text style={styles.remText}>Don’t have an account? </Text>
-        <Text style={styles.forgotTxt}>Learn more</Text>
-      </View>
+      ) : (
+        <>
+          <View style={styles.titleWrapper}>
+            <Text style={styles.titleTxt}>Sign in</Text>
+          </View>
+          <ScrollView>
+            <TextField
+              title="SIN"
+              placeHolder="Enter Your SIN"
+              value={userDetails?.sin}
+              onChangeText={(val) =>
+                setUserDetails({ ...userDetails, sin: val })
+              }
+              keyboardType="numeric"
+            />
+            <TextField
+              title="Phone Number"
+              placeHolder="Enter your phone number"
+              value={userDetails?.phone}
+              onChangeText={(val) =>
+                setUserDetails({ ...userDetails, phone: val })
+              }
+              keyboardType="phone-pad"
+            />
+            <TextField
+              title="Password"
+              placeHolder="Enter your password"
+              password
+              hidePass={hidePass}
+              setHidePass={setHidePass}
+              value={userDetails?.password}
+              onChangeText={(val) =>
+                setUserDetails({ ...userDetails, password: val })
+              }
+            />
+            <View style={styles.forgotWrapper}>
+              <View style={styles.checkBoxWrapper}>
+                <CheckBox setSelect={setSelect} select={select} />
+                <Text style={styles.remText}>Remember me</Text>
+              </View>
+              <Text
+                onPress={() => props.navigation.navigate("ForgotPassword")}
+                style={styles.forgotTxt}
+              >
+                Forgot Password?
+              </Text>
+            </View>
+            <PrimaryButton title="SIGN IN" onPress={onSignIn} />
+            <View style={styles.moreWrapper}>
+              <Text style={styles.remText}>Don’t have an account? </Text>
+              <Text style={styles.forgotTxt}>Learn more</Text>
+            </View>
+          </ScrollView>
+        </>
+      )}
     </View>
   );
 };
@@ -125,11 +169,19 @@ const styles = StyleSheet.create({
   moreWrapper: {
     marginVertical: hp("2%"),
     flexDirection: "row",
+    alignSelf: "center",
+  },
+  loader: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    paddingBottom: hp("15%"),
   },
 });
 
 const mapStateToProps = (state) => ({
   errors: state.errors.errors,
+  adminData: state.main.admin_data,
 });
 
-export default connect(mapStateToProps)(SignIn);
+export default connect(mapStateToProps, { getAdmin })(SignIn);

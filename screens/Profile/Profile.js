@@ -12,8 +12,20 @@ import BottomMenu from "../../components/common/BottomMenu";
 import { Image } from "react-native";
 import { TouchableOpacity } from "react-native";
 import OptionCard from "./components/OptionCard";
+import { removeAsyncData } from "../../utils/utils";
 
 const Profile = (props) => {
+  const [userInfo, setUserInfo] = useState(props?.adminData);
+
+  useEffect(() => {
+    setUserInfo(props?.adminData);
+  }, [props?.adminData]);
+
+  const onLogout = () => {
+    removeAsyncData("userLoginStatus");
+    props?.navigation.navigate("SignIn");
+  };
+
   return (
     <View style={styles.container}>
       <Header navigation={props.navigation} title="My Profile" />
@@ -24,17 +36,20 @@ const Profile = (props) => {
           <Image
             style={{ height: "100%", width: "100%" }}
             resizeMode="cover"
-            source={require("../../assets/profileImg.png")}
+            source={
+              userInfo?.profile?.url
+                ? { uri: userInfo?.profile?.url }
+                : require("../../assets/profileImg.png")
+            }
           />
         </View>
         <View style={styles.txtWrapper}>
-          <Text style={styles.nameText}>Zuhran Ahmad</Text>
-          <Text style={styles.sinText}>SIN: 1234567890</Text>
+          <Text
+            style={styles.nameText}
+          >{`${userInfo?.firstName} ${userInfo?.lastName}`}</Text>
+          <Text style={styles.sinText}>SIN: {userInfo?.sin}</Text>
         </View>
-        <TouchableOpacity
-          onPress={() => props?.navigation.navigate("SignIn")}
-          style={styles.signOutBtn}
-        >
+        <TouchableOpacity onPress={onLogout} style={styles.signOutBtn}>
           <Text style={styles.signOutTxt}>Sign Out</Text>
         </TouchableOpacity>
       </View>
@@ -53,7 +68,7 @@ const Profile = (props) => {
       <OptionCard
         title="Reset Password"
         img={require("../../assets/lock.png")}
-        onPress={() => props.navigation.navigate("ForgotPassword")}
+        onPress={() => props.navigation.navigate("ResetPassword")}
       />
       <View style={styles.titleTxtBox}>
         <Text style={styles.titleText}>Privacy</Text>
@@ -127,6 +142,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => ({
   errors: state.errors.errors,
+  adminData: state.main.admin_data,
 });
 
 export default connect(mapStateToProps)(Profile);
