@@ -26,6 +26,7 @@ import {
 import { ActivityIndicator } from "react-native";
 import { validateUpdateInfo } from "../../utils/validation";
 import * as ImagePicker from "expo-image-picker";
+import KeyboardLayout from "../../components/common/KeyboardLayout";
 
 const Settings = (props) => {
   const [loading, setLoading] = useState(false);
@@ -42,6 +43,7 @@ const Settings = (props) => {
   useEffect(() => {
     setUserInfo(props?.adminData);
   }, [props?.adminData]);
+  console.log(userForm);
 
   const onSubmit = () => {
     validateUpdateInfo(userForm, props?.adminData, image)
@@ -98,41 +100,43 @@ const Settings = (props) => {
 
   return (
     <View style={styles.container}>
-      <Header navigation={props.navigation} title="Account Settings" back />
-      {/* Profile Card */}
+      <KeyboardLayout>
+        <Header navigation={props.navigation} title="Account Settings" back />
+        {/* Profile Card */}
 
-      <View style={styles.profileCard}>
-        <View style={styles.imgWrapper}>
-          <Image
-            style={{ height: "100%", width: "100%" }}
-            resizeMode="cover"
-            source={
-              image
-                ? { uri: image }
-                : userInfo?.profile?.url
-                ? { uri: userInfo?.profile?.url }
-                : require("../../assets/profileImg.png")
-            }
-          />
+        <View style={styles.profileCard}>
+          <View style={styles.imgWrapper}>
+            <Image
+              style={{ height: "100%", width: "100%" }}
+              resizeMode="cover"
+              source={
+                image
+                  ? { uri: image }
+                  : userInfo?.profile?.url
+                  ? { uri: userInfo?.profile?.url }
+                  : require("../../assets/profileImg.png")
+              }
+            />
+          </View>
+          <View style={styles.cameraWrapper}>
+            <TouchableOpacity onPress={pickImage} style={styles.cameraIcon}>
+              <Ionicons name="camera" size={rf(11)} color="#fff" />
+            </TouchableOpacity>
+          </View>
         </View>
-        <View style={styles.cameraWrapper}>
-          <TouchableOpacity onPress={pickImage} style={styles.cameraIcon}>
-            <Ionicons name="camera" size={rf(11)} color="#fff" />
-          </TouchableOpacity>
-        </View>
-      </View>
-      <ScrollView>
         <TextField
           title="First Name"
           placeHolder="Zuhran"
           value={userForm.firstName}
           onChangeText={(val) => handleChangeValue("firstName", val)}
+          editable={false}
         />
         <TextField
           title="Last Name"
           placeHolder="Ahmed"
           value={userForm.lastName}
           onChangeText={(val) => handleChangeValue("lastName", val)}
+          editable={false}
         />
         <TextField
           title="Phone Number"
@@ -150,6 +154,7 @@ const Settings = (props) => {
           title="SIN"
           value={userForm.sin}
           onChangeText={(val) => handleChangeValue("sin", val)}
+          editable={false}
         />
         <View style={styles.buttonWrapper}>
           <PrimaryButton
@@ -163,7 +168,7 @@ const Settings = (props) => {
             onPress={onSubmit}
           />
         </View>
-      </ScrollView>
+      </KeyboardLayout>
     </View>
   );
 };

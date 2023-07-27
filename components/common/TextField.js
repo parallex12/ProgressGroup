@@ -25,6 +25,7 @@ const TextField = (props) => {
           value={value}
           onChangeText={props?.onChangeText}
           keyboardType={props?.keyboardType}
+          editable={props?.editable}
         />
         {props.password && (
           <TouchableOpacity onPress={() => setHidePass(!hidePass)}>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { StyleSheet, View, Text, ScrollView } from "react-native";
+import { StyleSheet, View, Text, ScrollView, Keyboard } from "react-native";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -14,6 +14,9 @@ import { validateAdmin } from "../../utils/validation";
 import { getAdmin } from "../../state-management/actions/Features/Actions";
 import { ActivityIndicator } from "react-native";
 import { getAsyncData, storeAsyncData } from "../../utils/utils";
+import { KeyboardAvoidingView } from "react-native";
+import { Platform } from "react-native";
+import KeyboardLayout from "../../components/common/KeyboardLayout";
 
 const SignIn = (props) => {
   const [select, setSelect] = useState(false);
@@ -26,6 +29,21 @@ const SignIn = (props) => {
 
   const [loading, setLoading] = useState(true);
   const [adminInfo, setAdminInfo] = useState({});
+
+  const [keyboardStatus, setKeyboardStatus] = useState("Keyboard Hidden");
+  useEffect(() => {
+    const showSubscription = Keyboard.addListener("keyboardDidShow", () => {
+      setKeyboardStatus("Keyboard Shown");
+    });
+    const hideSubscription = Keyboard.addListener("keyboardDidHide", () => {
+      setKeyboardStatus("Keyboard Hidden");
+    });
+
+    return () => {
+      showSubscription.remove();
+      hideSubscription.remove();
+    };
+  }, []);
 
   useEffect(() => {
     props?.getAdmin(setLoading);
@@ -63,17 +81,17 @@ const SignIn = (props) => {
 
   return (
     <View style={styles.container}>
-      <ImgHeader />
-      {loading ? (
-        <View style={styles.loader}>
-          <ActivityIndicator size="large" color="#FFF" />
-        </View>
-      ) : (
-        <>
-          <View style={styles.titleWrapper}>
-            <Text style={styles.titleTxt}>Sign in</Text>
+      <KeyboardLayout>
+        <ImgHeader />
+        {loading ? (
+          <View style={styles.loader}>
+            <ActivityIndicator size="large" color="#FFF" />
           </View>
-          <ScrollView>
+        ) : (
+          <>
+            <View style={styles.titleWrapper}>
+              <Text style={styles.titleTxt}>Sign in</Text>
+            </View>
             <TextField
               title="SIN"
               placeHolder="Enter Your SIN"
@@ -120,9 +138,9 @@ const SignIn = (props) => {
               <Text style={styles.remText}>Don’t have an account? </Text>
               <Text style={styles.forgotTxt}>Learn more</Text>
             </View>
-          </ScrollView>
-        </>
-      )}
+          </>
+        )}
+      </KeyboardLayout>
     </View>
   );
 };

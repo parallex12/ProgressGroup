@@ -12,6 +12,7 @@ import TextField from "../../components/common/TextField";
 import { validateOldPass } from "../../utils/validation";
 import { _ResetPassword } from "../../state-management/actions/Features/Actions";
 import { ActivityIndicator } from "react-native";
+import KeyboardLayout from "../../components/common/KeyboardLayout";
 
 const ForgotPassword = (props) => {
   const [hideNewPass, setHideNewPass] = useState(true);
@@ -39,33 +40,43 @@ const ForgotPassword = (props) => {
 
   return (
     <View style={styles.container}>
-      <Header navigation={props.navigation} title="Reset Password" back />
-      <TextField
-        title="Old Password"
-        placeHolder="Enter your password"
-        password
-        hidePass={hideNewPass}
-        setHidePass={setHideNewPass}
-        value={userDetails?.oldPass}
-        onChangeText={(val) => setUserDetails({ ...userDetails, oldPass: val })}
-      />
-      <TextField
-        title="New Password"
-        placeHolder="Enter your password"
-        password
-        hidePass={hideConfirmPass}
-        setHidePass={setHideConfirmPass}
-        value={userDetails?.newPass}
-        onChangeText={(val) => setUserDetails({ ...userDetails, newPass: val })}
-      />
-      <View style={styles.buttonWrapper}>
-        <PrimaryButton
-          title={
-            loading ? <ActivityIndicator size="small" color="#fff" /> : "RESET"
+      <KeyboardLayout>
+        <Header navigation={props.navigation} title="Reset Password" back />
+        <TextField
+          title="Old Password"
+          placeHolder="Enter your password"
+          password
+          hidePass={hideNewPass}
+          setHidePass={setHideNewPass}
+          value={userDetails?.oldPass}
+          onChangeText={(val) =>
+            setUserDetails({ ...userDetails, oldPass: val })
           }
-          onPress={onReset}
         />
-      </View>
+        <TextField
+          title="New Password"
+          placeHolder="Enter your password"
+          password
+          hidePass={hideConfirmPass}
+          setHidePass={setHideConfirmPass}
+          value={userDetails?.newPass}
+          onChangeText={(val) =>
+            setUserDetails({ ...userDetails, newPass: val })
+          }
+        />
+        <View style={styles.buttonWrapper}>
+          <PrimaryButton
+            title={
+              loading ? (
+                <ActivityIndicator size="small" color="#fff" />
+              ) : (
+                "RESET"
+              )
+            }
+            onPress={onReset}
+          />
+        </View>
+      </KeyboardLayout>
     </View>
   );
 };
