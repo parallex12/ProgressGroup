@@ -53,13 +53,13 @@ const ContactUs = (props) => {
       >
         <ContactCard
           title="Contact Us"
-          detail="(289) 813-3378"
+          detail="(289) 707-5891"
           img={require("../../assets/call.png")}
           onPress={dialCall}
         />
         <ContactCard
           title="Email Us"
-          detail="info@progressgroupinc.com"
+          detail="info@martinitec.com"
           img={require("../../assets/sms.png")}
           onPress={openMailer}
         />

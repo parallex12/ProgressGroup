@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
   },
   imgWrapper: {
-    height: hp("7%"),
+    height: hp("9%"),
     width: wp("42%"),
   },
   bgImg: {
