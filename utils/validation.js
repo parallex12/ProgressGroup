@@ -1,5 +1,4 @@
 export const validateAdmin = (user, confirmUser) => {
-  console.log("validation", user, confirmUser);
   return new Promise(function (resolve, reject) {
     if (user?.sin == "" && user?.phone == "" && user?.password == "") {
       reject(Error("Please enter all fields"));
@@ -45,7 +44,6 @@ export const validateUpdateInfo = (user, prevUser, image) => {
 };
 
 export const validateOldPass = (user, oldPass) => {
-  console.log(oldPass);
   return new Promise(function (resolve, reject) {
     if (oldPass != user?.oldPass) {
       reject(Error("Old Password is Incorrect"));
