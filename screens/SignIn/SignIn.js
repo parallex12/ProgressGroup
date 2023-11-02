@@ -13,13 +13,18 @@ import CheckBox from "../../components/common/CheckBox";
 import { validateAdmin } from "../../utils/validation";
 import { getAdmin } from "../../state-management/actions/Features/Actions";
 import { ActivityIndicator } from "react-native";
-import { getAsyncData, storeAsyncData } from "../../utils/utils";
+import {
+  getAsyncData,
+  removeAsyncData,
+  storeAsyncData,
+} from "../../utils/utils";
 import { KeyboardAvoidingView } from "react-native";
 import { Platform } from "react-native";
 import KeyboardLayout from "../../components/common/KeyboardLayout";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const SignIn = (props) => {
-  const [select, setSelect] = useState(false);
+  const [remember, setRemember] = useState(true);
   const [hidePass, setHidePass] = useState(true);
   const [userDetails, setUserDetails] = useState({
     sin: "",
@@ -62,14 +67,29 @@ const SignIn = (props) => {
   }, []);
 
   useEffect(() => {
+    (async () => {
+      let userRemData = await getAsyncData("userRememberedData");
+      let objIsFilled = Object.keys(userRemData).length !== 0;
+      if (objIsFilled) {
+        setUserDetails(userRemData);
+      }
+    })();
+  }, []);
+
+  useEffect(() => {
     if (props?.adminData) {
       setAdminInfo(props?.adminData);
     }
   }, [props?.adminData]);
 
-  const onSignIn = () => {
+  const onSignIn = async () => {
     validateAdmin(userDetails, adminInfo)
       .then((res) => {
+        if (remember) {
+          storeAsyncData("userRememberedData", userDetails);
+        } else {
+          storeAsyncData("userRememberedData", {});
+        }
         props.navigation.reset({
           index: 0,
           routes: [{ name: "OurServices" }],
@@ -123,7 +143,7 @@ const SignIn = (props) => {
             />
             <View style={styles.forgotWrapper}>
               <View style={styles.checkBoxWrapper}>
-                <CheckBox setSelect={setSelect} select={select} />
+                <CheckBox setSelect={setRemember} select={remember} />
                 <Text style={styles.remText}>Remember me</Text>
               </View>
               <Text

@@ -13,7 +13,7 @@ export function generateArrayOfYears() {
 
 export const storeAsyncData = async (name, value) => {
   try {
-    await AsyncStorage.setItem(name, value);
+    await AsyncStorage.setItem(name, JSON.stringify(value));
   } catch (e) {
     console.log("errorasync", e);
     // saving error
